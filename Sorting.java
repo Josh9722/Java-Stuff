@@ -7,7 +7,7 @@ import java.util.*;
 public class Sorting {
     public static LinkedList<Integer> unsortedList;
     public static Scanner sc = new Scanner(System.in);
-    public static final int[] inputArray = {4, 2, 6, 5, 3, 9};
+    public static final int[] inputArray = {8, 7, 6, 1, 0, 9, 2};
 
     public static void main(String[] args) {
         unsortedList = new LinkedList<Integer>();

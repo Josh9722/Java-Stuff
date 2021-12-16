@@ -1,73 +1,81 @@
 import java.util.*;
 
 public class QuickSort {
-    public int stepCount; 
-    public int leftPointer;
-    public int rightPointer; 
-    public int pivotIndex; 
-    public boolean sorted;
-    public LinkedList<Integer> unsortedNumbers; 
+    public int stepCount;
+    public int sortCount; 
+    public int pivotIndex;
+    public LinkedList<Integer> unsortedNumbers;
+    public boolean pivotSwapped = false;
 
     public QuickSort(LinkedList<Integer> unsortedNumbers) {
-        stepCount = 1;
-        leftPointer = 0; 
-        rightPointer = unsortedNumbers.size() - 1; 
-        pivotIndex = (int) (unsortedNumbers.size() / 2);
-        sorted = false; 
         this.unsortedNumbers = unsortedNumbers;
+        sortCount = 0; 
 
         System.out.println("Running QuickSort Algorithm...");
-        System.out.println("    Provided List: " + unsortedNumbers);
-        sort(); 
-
+        sort(0, unsortedNumbers.size()-1);
         System.out.println("QuickSort Algorithm Finished.");
     }
 
-    public void sort() { 
-        System.out.println("Sort Begin...");
-        System.out.println("    Identified Pivot Index/Value: " + pivotIndex + " / " + unsortedNumbers.get(pivotIndex));
+    public void sort(int start, int end) {
+        stepCount = 1;
+        sortCount++;
+        System.out.println("(sort) Sort Count: " + sortCount); 
 
-        while (leftPointer != rightPointer) { 
-            updateLeftPointer();
-            updateRightPointer(); 
-            swapPointerValues();
-            System.out.println(stepCount + ". " + unsortedNumbers) ;
-            stepCount++; 
-        }
+        pivotIndex = end;
+        pivotSwapped = false;
+
+        System.out.println("Sort Phase Begin..." + " (" + unsortedNumbers.get(start) + ", " + unsortedNumbers.get(end) + ")");
+        System.out.println("    Provided List: " + unsortedNumbers);
+
+        checkHigher(start);
+
+        System.out.println("Sort Finished ");
     }
 
-    public void updateLeftPointer() { 
-        boolean foundAdjustment = false;
-        while (!foundAdjustment) { 
-            if (unsortedNumbers.get(leftPointer) < unsortedNumbers.get(pivotIndex)) {
-                leftPointer++; 
-            } else {
-                System.out.println("    Stationary Left Pointer: " + unsortedNumbers.get(leftPointer));
-                foundAdjustment = true;
+    public void checkHigher(int start) {
+        boolean running = true;
+        for (int i = start; i < pivotIndex; i++) {
+            if (unsortedNumbers.get(i) > unsortedNumbers.get(pivotIndex)) {
+                checkLower(i);
+                if (pivotSwapped) {
+                    return; 
+                } 
+            } 
+        } 
+        System.out.println("IS THIS RUNNING");
+    }
+
+    public void checkLower(int higherIndex) {
+        for (int i = higherIndex; i < pivotIndex; i++) {
+            if (unsortedNumbers.get(i) < unsortedNumbers.get(pivotIndex)) {
+                swapValues(i, higherIndex);
+                return;
             }
         }
-    }
-    
-    public void updateRightPointer() {
-        boolean foundAdjustment = false;
-        while (!foundAdjustment) {
-            if (unsortedNumbers.get(rightPointer) > unsortedNumbers.get(pivotIndex)) {
-                rightPointer--;
-            } else {
-                System.out.println("    Stationary Right Pointer: " + unsortedNumbers.get(rightPointer));
-                foundAdjustment = true;
-            }
-        }
+        swapPivot(higherIndex); 
     }
 
-    public void swapPointerValues() {
-        if (leftPointer == pivotIndex || rightPointer == pivotIndex) {
-            System.out.println("Swap canceled as contains pivot"); 
-        } else {
-        System.out.println("Swapping " + unsortedNumbers.get(leftPointer) + " with " + unsortedNumbers.get(rightPointer) + "..."); 
-        int temp = unsortedNumbers.get(leftPointer);
-        unsortedNumbers.set(leftPointer, unsortedNumbers.get(rightPointer));
-        unsortedNumbers.set(rightPointer, temp);
-        }
+    public void swapPivot(int swapIndex) {  //Swap index is the index of the higher number and the new pivot location 
+        System.out.println("Pivot Swap: " + pivotIndex + " (" + unsortedNumbers.get(pivotIndex) + ") ");
+        swapValues(pivotIndex, swapIndex);
+        pivotSwapped = true;
+        if (swapIndex >= 2) {
+            System.out.println("(swap >=2) Sort Count: " + sortCount);
+            sort(0, swapIndex-1);
+        } else if ((unsortedNumbers.size()-1)-swapIndex >=2 ) {
+            System.out.println("(swap) Sort Count: " + sortCount);
+            sort(swapIndex+1, unsortedNumbers.size()-1);
+        } 
+    }
+
+    public void swapValues(int a, int b) { // Swaps the values at index's a & b
+        System.out.println("Swapping " + unsortedNumbers.get(b) + " with " + unsortedNumbers.get(a) + "...");
+        System.out.println("  " + stepCount + ". " + unsortedNumbers); 
+        
+        int temp = unsortedNumbers.get(b);
+        unsortedNumbers.set(b, unsortedNumbers.get(a));
+        unsortedNumbers.set(a, temp);
+        System.out.println(" --> " + unsortedNumbers);
+        stepCount++;
     }
 }
