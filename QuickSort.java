@@ -60,7 +60,7 @@ public class QuickSort {
         swapValues(pivotIndex, swapIndex);
         pivotSwapped = true;
         if (swapIndex >= 2) {
-            System.out.println("(swap >=2) Sort Count: " + sortCount);
+            System.out.println("(swap >=2) Sort Countremixe: " + sortCount);
             sort(0, swapIndex-1);
         } else if ((unsortedNumbers.size()-1)-swapIndex >=2 ) {
             System.out.println("(swap) Sort Count: " + sortCount);
