@@ -9,12 +9,9 @@ public class Sorting {
     public static Scanner sc = new Scanner(System.in);
     public static final int[] inputArray = { 8, 7, 6, 1, 0, 9, 2 };
 
-    public static void main(String[] args) {
+    public Sorting() {
         unsortedList = new LinkedList<Integer>();
         setupList();
-        sortingOptions();
-
-        printFinalList();
     }
 
     public static void setupList() {
